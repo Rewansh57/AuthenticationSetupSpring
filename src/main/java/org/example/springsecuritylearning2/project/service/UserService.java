@@ -18,6 +18,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder Encoder;
     private final MyAuthenticationManager authManager;
+    private final JwtService jwtService;
+
 
 
 
@@ -36,7 +38,8 @@ public class UserService {
         UsernamePasswordAuthenticationToken authRequest=new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
         Authentication authToken=authManager.authenticate(authRequest);
         SecurityContextHolder.getContext().setAuthentication(authToken);
-        return "logged In Successfully";
+        return jwtService.generateToken(user.getUsername());
+
 
 
 

@@ -14,7 +14,6 @@ public class MyController {
 
 
     @PostMapping("/register")
-
     public String register(@RequestBody Users user){
         return userService.register(user);
 
@@ -24,4 +23,5 @@ public class MyController {
         return userService.login(user);
 
     }
+
 }

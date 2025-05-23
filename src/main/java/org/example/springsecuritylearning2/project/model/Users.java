@@ -14,11 +14,10 @@ import java.util.Set;
 public class Users {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-
     private int id;
-
-    private String username;
     @Column(unique = true)
+    private String username;
+
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

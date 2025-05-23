@@ -40,15 +40,11 @@ public class SecurityConfig {
 
 
         http.httpBasic(Customizer.withDefaults()).authenticationProvider(auth)
-                .authorizeHttpRequests((c) -> {
-                    c.requestMatchers("/register").permitAll()
-                            .anyRequest().authenticated();
+                .authorizeHttpRequests((c) -> c.requestMatchers("/register","/login").permitAll()
+                        .anyRequest().authenticated())
+                .csrf(c->c.disable());
 
 
-                })
-                .csrf(c->c.disable())
-
-                .formLogin(Customizer.withDefaults());
 
         return http.build();
 
