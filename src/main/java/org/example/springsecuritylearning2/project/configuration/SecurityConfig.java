@@ -1,21 +1,45 @@
 package org.example.springsecuritylearning2.project.configuration;
 
+import org.example.springsecuritylearning2.project.service.MyUserDetails;
+import org.example.springsecuritylearning2.project.service.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+
+    }
+    @Bean
+
+    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
 
 
-        http.httpBasic(Customizer.withDefaults())
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, DaoAuthenticationProvider auth, MyUserDetailsService service) throws Exception {
+
+
+        http.httpBasic(Customizer.withDefaults()).authenticationProvider(auth)
                 .authorizeHttpRequests((c) -> {
                     c.requestMatchers("login").permitAll()
                             .anyRequest().authenticated();
@@ -28,10 +52,7 @@ public class SecurityConfig {
 
 
     }
-    public AuthenticationManager authenticationManager(){
-        return new MyAuthenticationManager();
 
 
 
-    }
 }
