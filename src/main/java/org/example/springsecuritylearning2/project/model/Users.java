@@ -13,6 +13,8 @@ import java.util.Set;
 
 public class Users {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+
     private int id;
 
     private String username;

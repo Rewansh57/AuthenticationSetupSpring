@@ -1,15 +1,15 @@
 package org.example.springsecuritylearning2.project.configuration;
 
-import org.example.springsecuritylearning2.project.service.MyUserDetails;
+
 import org.example.springsecuritylearning2.project.service.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
+
+
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +20,7 @@ public class SecurityConfig {
 
     @Bean
 
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
 
     }
@@ -41,11 +41,13 @@ public class SecurityConfig {
 
         http.httpBasic(Customizer.withDefaults()).authenticationProvider(auth)
                 .authorizeHttpRequests((c) -> {
-                    c.requestMatchers("login").permitAll()
+                    c.requestMatchers("/register").permitAll()
                             .anyRequest().authenticated();
 
 
                 })
+                .csrf(c->c.disable())
+
                 .formLogin(Customizer.withDefaults());
 
         return http.build();

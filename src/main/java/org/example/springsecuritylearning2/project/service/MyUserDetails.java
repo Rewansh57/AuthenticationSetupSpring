@@ -13,10 +13,16 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
-@Component
+
+
 public class MyUserDetails implements UserDetails {
-    private final Users user;
+    private Users user;
+
+    public MyUserDetails(Users user){
+        this.user=user;
+
+    }
+
 
 
 
